@@ -110,6 +110,7 @@ function close() {
  * compatibility (broadcasting), expression compilation and a sample evaluation.
  * Returns the resolved definition, or null (with `error` set) on failure.
  */
+// eslint-disable-next-line max-lines-per-function
 async function validate(): Promise<TDerivedVariable | null> {
   error.value = null;
   resultDimsPreview.value = null;
@@ -276,8 +277,8 @@ async function onValidateOnly() {
             />
           </div>
           <p class="help">
-            JavaScript expression. Math functions are available unprefixed
-            (e.g. <code>sqrt</code>, <code>abs</code>, <code>log</code>).
+            JavaScript expression. Math functions are available unprefixed (e.g.
+            <code>sqrt</code>, <code>abs</code>, <code>log</code>).
           </p>
         </div>
 
@@ -297,7 +298,10 @@ async function onValidateOnly() {
           </div>
         </div>
 
-        <div v-if="resultDimsPreview" class="notification is-success is-light py-2">
+        <div
+          v-if="resultDimsPreview"
+          class="notification is-success is-light py-2"
+        >
           Dimensions: [{{ resultDimsPreview.join(", ") }}]
         </div>
         <div v-if="error" class="notification is-danger is-light py-2">

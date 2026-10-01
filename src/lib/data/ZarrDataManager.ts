@@ -50,7 +50,9 @@ export class ZarrDataManager {
     return this.derived.has(name);
   }
 
-  private static isSyntheticArray(array: unknown): array is { __derived: TDerivedVariable } {
+  private static isSyntheticArray(
+    array: unknown
+  ): array is { __derived: TDerivedVariable } {
     return (
       typeof array === "object" &&
       array !== null &&

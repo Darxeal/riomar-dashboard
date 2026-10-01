@@ -42,6 +42,7 @@ function onChange(event: Event) {
 }
 </script>
 
+<!-- eslint-disable-next-line vue/no-root-v-if -->
 <template>
   <div v-if="levelOptions.length > 1" class="panel-block is-block">
     <div class="control">

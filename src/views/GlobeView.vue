@@ -95,8 +95,8 @@ const derivedEntries = computed<Record<string, TDataSource>>(() => {
       dataset: ref.dataset,
       attrs: {
         units: def.units ?? "",
-        long_name: def.longName ?? def.name,
-        standard_name: def.longName ?? def.name,
+        long_name: def.longName ?? def.name, // eslint-disable-line camelcase
+        standard_name: def.longName ?? def.name, // eslint-disable-line camelcase
         dimensionNames: def.resultDims,
         _ARRAY_DIMENSIONS: def.resultDims,
       },
@@ -354,7 +354,11 @@ onMounted(async () => {
       :is-rotated="detectedGridType === GRID_TYPES.REGULAR_ROTATED"
     />
     <TimeSeriesPanel
-      v-if="detectedGridType !== undefined && detectedGridType !== GRID_TYPES.ERROR"
+      v-if="
+        modelInfo &&
+        detectedGridType !== undefined &&
+        detectedGridType !== GRID_TYPES.ERROR
+      "
       :datasources="datasources"
       :model-info="modelInfo"
       :grid-type="detectedGridType"

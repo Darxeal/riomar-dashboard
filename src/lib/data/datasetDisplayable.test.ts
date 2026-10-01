@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  GRID_TYPES,
-  getGridType,
-  type T_GRID_TYPES,
-} from "./gridTypeDetector";
+import { GRID_TYPES, getGridType, type T_GRID_TYPES } from "./gridTypeDetector";
 import { resolveHealpixNside } from "./healpixUtils";
 import { indexFromZarr, indexMultiscaleLevel } from "./sourceIndexing";
 

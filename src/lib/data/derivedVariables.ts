@@ -29,6 +29,7 @@ export type TDerivedChunk = {
 };
 
 /** Math names exposed (unprefixed) inside formula expressions. */
+// prettier-ignore
 const MATH_KEYS = [
   "abs", "sqrt", "cbrt", "sin", "cos", "tan", "asin", "acos", "atan", "atan2",
   "sinh", "cosh", "tanh", "exp", "expm1", "log", "log2", "log10", "log1p",
@@ -59,7 +60,6 @@ export function compileExpression(
     }
   }
   const header = `const {${MATH_KEYS.join(",")}} = Math;`;
-  // eslint-disable-next-line @typescript-eslint/no-implied-eval, no-new-func
   const fn = new Function(
     ...inputs,
     `"use strict";${header} return (${expression});`
@@ -141,14 +141,14 @@ function buildAttrs(
   // Copy only what grid/CRS detection needs from the reference operand; do NOT
   // copy fill/missing values (operands already map missing data to NaN).
   if (refAttrs.grid_mapping) {
-    attrs.grid_mapping = refAttrs.grid_mapping;
+    attrs.grid_mapping = refAttrs.grid_mapping; // eslint-disable-line camelcase
   }
   if (refAttrs.coordinates) {
     attrs.coordinates = refAttrs.coordinates;
   }
   attrs.units = def.units ?? "";
-  attrs.long_name = def.longName ?? def.name;
-  attrs.standard_name = def.longName ?? def.name;
+  attrs.long_name = def.longName ?? def.name; // eslint-disable-line camelcase
+  attrs.standard_name = def.longName ?? def.name; // eslint-disable-line camelcase
   attrs._ARRAY_DIMENSIONS = def.resultDims;
   attrs.dimensionNames = def.resultDims;
   return attrs;
@@ -162,8 +162,14 @@ export async function buildSyntheticArray(
   def: TDerivedVariable,
   datasources: TSources
 ): Promise<TSyntheticArray> {
-  const refSource = ZarrDataManager.getDatasetSource(datasources, def.referenceVar);
-  const refArr = await ZarrDataManager.getVariableInfo(refSource, def.referenceVar);
+  const refSource = ZarrDataManager.getDatasetSource(
+    datasources,
+    def.referenceVar
+  );
+  const refArr = await ZarrDataManager.getVariableInfo(
+    refSource,
+    def.referenceVar
+  );
   return {
     __derived: def,
     shape: Array.from(refArr.shape),
@@ -218,6 +224,7 @@ async function loadOperand(
  * result dimensions, and applying the compiled expression element-wise. Any
  * element where an operand is missing/fill/NaN becomes NaN.
  */
+// eslint-disable-next-line max-lines-per-function
 export async function evaluateDerived(
   def: TDerivedVariable,
   datasources: TSources,
@@ -225,11 +232,19 @@ export async function evaluateDerived(
 ): Promise<TDerivedChunk> {
   const resultDims = def.resultDims;
   const sel: TSelectionArr =
-    selection && selection.length > 0 ? selection.slice() : resultDims.map(() => null);
+    selection && selection.length > 0
+      ? selection.slice()
+      : resultDims.map(() => null);
 
   // The reference operand carries all result dimensions and drives output shape.
-  const refSource = ZarrDataManager.getDatasetSource(datasources, def.referenceVar);
-  const refArr = await ZarrDataManager.getVariableInfo(refSource, def.referenceVar);
+  const refSource = ZarrDataManager.getDatasetSource(
+    datasources,
+    def.referenceVar
+  );
+  const refArr = await ZarrDataManager.getVariableInfo(
+    refSource,
+    def.referenceVar
+  );
   const refChunk = await ZarrDataManager.getVariableDataFromArray(refArr, sel);
   const outShape = Array.from(refChunk.shape as readonly number[]);
   const outStride = contiguousStride(outShape);

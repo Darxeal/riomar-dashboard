@@ -27,7 +27,7 @@ export default [
       "no-unused-vars": "off",
       "no-undef": "off",
       camelcase: "warn",
-      eqeqeq: "error",
+      eqeqeq: ["error", "always", { null: "ignore" }],
       strict: "error",
       "max-lines-per-function": [
         "warn",
@@ -144,14 +144,9 @@ export default [
   },
   {
     rules: {
-      "prettier/prettier": [
-        "error",
-        {
-          "endOfLine": "auto"
-        },
-      ],
-    }
-  }
+      "prettier/prettier": ["warn", { endOfLine: "auto" }],
+    },
+  },
   // prettier disables style rules, re-enable curly
   {
     rules: {
@@ -177,6 +172,7 @@ export default [
         "**/*.test.ts",
         "env.d.ts",
         "vite.config.ts",
+        "vitest.config.ts",
         "eslint.config.js",
       ],
       "import/resolver": {

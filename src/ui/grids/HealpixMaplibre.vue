@@ -260,8 +260,8 @@ function onPolygonClick(e: maplibregl.MapMouseEvent) {
   if (polygonPoints.length >= 3) {
     const first = map.project([polygonPoints[0].lng, polygonPoints[0].lat]);
     const here = map.project([lng, lat]);
-    const closing = Math.hypot(first.x - here.x, first.y - here.y) <=
-      POLYGON_CLOSE_PX;
+    const closing =
+      Math.hypot(first.x - here.x, first.y - here.y) <= POLYGON_CLOSE_PX;
     if (closing) {
       // Finish only if the closed ring is a valid polygon (simple + real area).
       if (isValidPolygon(polygonPoints)) {
@@ -343,6 +343,7 @@ function onBboxMouseUp(e: maplibregl.MapMouseEvent) {
   store.setPickedBbox({ latMin, latMax, lonMin, lonMax });
 }
 
+// eslint-disable-next-line max-lines-per-function
 function addPickLayers() {
   if (!map || map.getSource("pick-bbox")) {
     return;

@@ -29,8 +29,14 @@ import {
   isLongitudeName,
 } from "@/lib/data/zarrUtils";
 import type { TModelInfo, TSources } from "@/lib/types/GlobeTypes";
-import RangeSlider from "@/ui/common/RangeSlider.vue";
 import { PICK_MODE, useGlobeControlStore } from "@/store/store";
+import RangeSlider from "@/ui/common/RangeSlider.vue";
+
+const props = defineProps<{
+  datasources?: TSources;
+  modelInfo?: TModelInfo;
+  gridType?: T_GRID_TYPES;
+}>();
 
 Chart.register(
   LineController,
@@ -45,12 +51,6 @@ Chart.register(
   // state in beforeInit, and crashes on update if that was skipped).
   Annotation
 );
-
-const props = defineProps<{
-  datasources?: TSources;
-  modelInfo?: TModelInfo;
-  gridType?: T_GRID_TYPES;
-}>();
 
 const store = useGlobeControlStore();
 const {
@@ -345,12 +345,14 @@ function pickBtnIcon(kind: TPickKind): string {
 }
 
 /** The store pick mode for each picker kind. */
-const PICK_MODE_FOR: Record<TPickKind, (typeof PICK_MODE)[keyof typeof PICK_MODE]> =
-  {
-    point: PICK_MODE.POINT,
-    bbox: PICK_MODE.BBOX,
-    polygon: PICK_MODE.POLYGON,
-  };
+const PICK_MODE_FOR: Record<
+  TPickKind,
+  (typeof PICK_MODE)[keyof typeof PICK_MODE]
+> = {
+  point: PICK_MODE.POINT,
+  bbox: PICK_MODE.BBOX,
+  polygon: PICK_MODE.POLYGON,
+};
 
 function onPickButton(kind: TPickKind) {
   // Clicking the picker that is currently active cancels it.
@@ -530,6 +532,7 @@ async function plot() {
   renderChart();
 }
 
+// eslint-disable-next-line max-lines-per-function
 function renderChart() {
   if (!canvasRef.value) {
     return;
@@ -773,11 +776,15 @@ watch(globalDimCoord, () => {
 });
 
 // Re-plot when the selected dimension or variable toggles change.
-watch([selectedDim, checked], () => {
-  if (hasPlotted.value && hasSelection.value) {
-    plot();
-  }
-}, { deep: true });
+watch(
+  [selectedDim, checked],
+  () => {
+    if (hasPlotted.value && hasSelection.value) {
+      plot();
+    }
+  },
+  { deep: true }
+);
 
 // A new dataset invalidates everything.
 watch(
@@ -800,11 +807,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    v-if="modelInfo"
-    class="panel ts-panel"
-    :class="{ 'ts-collapsed': collapsed }"
-  >
+  <div class="panel ts-panel" :class="{ 'ts-collapsed': collapsed }">
     <div v-if="!collapsed" class="ts-body">
       <!-- Pickers: two buttons, each with normal / picking / picked states -->
       <div class="ts-pick">
@@ -841,10 +844,7 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- Dimension selector (the chart's x-axis) + range slider -->
-      <div
-        v-if="dimOptions.length > 1 || hasRange"
-        class="ts-controls"
-      >
+      <div v-if="dimOptions.length > 1 || hasRange" class="ts-controls">
         <div v-if="dimOptions.length > 1" class="ts-dim">
           <span class="ts-dim-label">Dimension</span>
           <div class="select is-small">

@@ -284,7 +284,10 @@ function coarsestLevelIndex(layout: TMultiscalesLevel[]): number {
   let bestLevel = Infinity;
   layout.forEach((level, i) => {
     const dggs = level.dggs as { refinement_level?: number } | undefined;
-    if (typeof dggs?.refinement_level === "number" && dggs.refinement_level < bestLevel) {
+    if (
+      typeof dggs?.refinement_level === "number" &&
+      dggs.refinement_level < bestLevel
+    ) {
       bestLevel = dggs.refinement_level;
       bestIndex = i;
     }

@@ -99,8 +99,7 @@ function pointInPolygon(
     const xj = rel(poly[j].lon);
     const yj = poly[j].lat;
     const intersect =
-      yi > lat !== yj > lat &&
-      x < ((xj - xi) * (lat - yi)) / (yj - yi) + xi;
+      yi > lat !== yj > lat && x < ((xj - xi) * (lat - yi)) / (yj - yi) + xi;
     if (intersect) {
       inside = !inside;
     }
@@ -359,6 +358,7 @@ function getSpatialAxes(
   return spatialAxes;
 }
 
+// eslint-disable-next-line max-lines-per-function
 async function extractHealpixSeries(
   datasources: TSources,
   variableSource: { store: string; dataset: string },
@@ -501,6 +501,7 @@ async function extractGriddedSeries(
  * dimension is fixed to its position in `otherDimSelections`, and only the index
  * range `[range.start, range.end]` of the varying dimension is fetched.
  */
+// eslint-disable-next-line max-lines-per-function
 export async function fetchSeries(
   datasources: TSources,
   varname: string,

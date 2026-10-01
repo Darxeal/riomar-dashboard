@@ -3,7 +3,6 @@ import { useEventListener } from "@vueuse/core";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, onMounted, ref, watch, type Ref } from "vue";
 
-import ActionControls from "./controls/ActionControls.vue";
 import BoundsControls from "./controls/BoundsControls.vue";
 import ColormapControls from "./controls/ColormapControls.vue";
 import DataInput from "./controls/DataInput.vue";
